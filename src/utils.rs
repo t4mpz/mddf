@@ -7,5 +7,5 @@ pub mod utils{
     let _ = fs::write(file_name, contents);
   }
 
-  pub fn getEnv(key: String) -> String{ return dotenvy::var(key).unwrap_or("".to_string()); }
+  pub fn get_env(key: &str) -> String{ return dotenvy::var(key).unwrap_or("".to_string()); }
 }
