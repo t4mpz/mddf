@@ -9,7 +9,7 @@ SCRAPS_FOLDER=scraps
 DEFAULT_FOLDER=downloads
 
 ```
-# Base update
-I'm honestly really sad about this project. It works, but the source for the images and mangas isn't working
-properly, it gives a 401 unauthorized error. So I'll have to search for another website to scrape from.
-But for now it's really sad about this, I'm very pissed.
+# Another flippin' update
+Now I've managed to make it work in a absolute move, I used a simple header paramether to 
+bypass the 403 http error. And it's working now, I'll work in some new bugs due to the code
+being made while I'm eepy
