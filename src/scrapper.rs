@@ -3,14 +3,33 @@ pub mod scrapper{
   use serde_json;
   use crate::structures::structures::{self, ImagePage, ListedChapter};
   use scraper::{html, Selector, ElementRef};
+  use std::process::{Command, Child};
+
+  pub async fn start_chromedriver() -> Child{
+    let output = Command::new("chromedriver")
+                                .arg("--port=38073")
+                                .arg("--silent")
+                                .spawn()
+                                .expect("Chromedriver failed to start");
+    return output;
+  }
+
+  pub fn hardkill_chromedriver() -> Result<(), Box<dyn std::error::Error>> { 
+    // used when some part of the program went wrong and have to dump the whole process
+    // it will run a killall chromedriver
+    let _ = Command::new("killall").arg("chromedriver").spawn();
+    Ok(())
+  }
+
+
 
   #[tokio::main]
   pub async fn retrieve_body(url: String) -> Result<String, Box<dyn std::error::Error>>{
+    let mut child_driver = start_chromedriver().await;
     let cap: Capabilities = serde_json::from_str(r#"{"browserName":"chrome","goog:chromeOptions":{"args":["--headless"]}}"#,).unwrap();
     let client = fantoccini::ClientBuilder::native()
     .capabilities(cap)
-    .connect("http://localhost:38073").await.expect("No webdriver?");
-
+    .connect("http://localhost:38073").await.expect("No webdriver? ");
     client.goto(&url).await?;
     let binding = client.current_url().await?;
     let client_url = binding.as_str();
@@ -19,6 +38,7 @@ pub mod scrapper{
     let body = client.source().await?;
 
     client.close().await?;
+    child_driver.kill()?;
 
     Ok(body)
   }

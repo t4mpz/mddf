@@ -2,9 +2,11 @@ pub mod pdfer{
   use pdf_writer;
   use jpeg_to_pdf::JpegToPdf;
   use std::io::{BufWriter, Write};
-  use std::fs::{File, read};
-  use crate::utils::utils::get_env;
+  use std::fs::{File, read, exists};
+  use crate::utils::utils::{get_env, mk_tmp_scraps_folder, clear_scraps_folder, fix_title_to_path};
   use curl::easy::{List, Easy};
+  use crate::structures::structures::ImagePage;
+  
   
   fn generate_headers() -> List{
     let mut headers = List::new();
@@ -14,8 +16,10 @@ pub mod pdfer{
     return headers;
   }
 
-  pub fn download_image(image_src: String, image_title: String) -> Result<String, Box<dyn std::error::Error>>{
-    let path = get_env("SCRAPS_FOLDER") + "/" + &image_title + ".jpg";
+  fn download_image(scrap_path: String, image_src: String, image_title: String) -> Result<String, Box<dyn std::error::Error>>{
+    let parsed_title = fix_title_to_path(image_title);
+    let path = scrap_path + "/" + &parsed_title + ".jpg";
+    println!("Working with path {}", path);
     let _ = File::create(&path)?;
     let mut file = File::options().write(true).append(true).open(&path).unwrap();
     let headers = generate_headers();
@@ -23,7 +27,6 @@ pub mod pdfer{
     handler.url(&image_src).unwrap();
     handler.http_headers(headers).unwrap();
     handler.write_function(move |data| {
-      // let mut resp_body = Cursor::new(resp.bytes()?);
       if let Err(e) = file.write_all(data) {
         panic!("Error writing the file {}", &e);
       }
@@ -33,14 +36,23 @@ pub mod pdfer{
     Ok(path)
   }
 
-  pub fn mesh_scraps(final_pdf: String, scraps: Vec<String>, manga_chapter_title: String) -> Result<String, Box<dyn std::error::Error>> {
-    let path = get_env("CHAPTERS_FOLDER") + "/" + &manga_chapter_title + ".pdf";
+  pub fn download_images(images: Vec<ImagePage>) -> Vec<String>{
+    let scraps_folder = mk_tmp_scraps_folder();
+    let images_path = images.iter().map(|img| {
+      download_image(scraps_folder.to_string(), img.src.to_string(), img.title.to_string()).unwrap()
+    }).collect();
+    return images_path;
+  }
+
+  pub fn mesh_scraps(scraps: Vec<String>, manga_chapter_title: String) -> Result<String, Box<dyn std::error::Error>> {
+    let path = format!("./{}.pdf", &manga_chapter_title);
     let _file = File::create(&path)?;
     let pdf = JpegToPdf::new();
     let n_pdf = pdf.add_images(scraps.iter().map(|scrap| {read(scrap).unwrap()}));
     if let Err(e) = n_pdf.create_pdf(&mut BufWriter::new(_file)) {
       panic!("Error writing the pdf {}", &e);
     }
+    let _ = clear_scraps_folder();
     Ok(path)
   }
 
