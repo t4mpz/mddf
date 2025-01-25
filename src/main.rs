@@ -3,9 +3,9 @@ mod scrapper;
 mod structures;
 mod pdfer;
 use std::env::args;
-use utils::utils::fix_title_to_path;
-use scrapper::scrapper::{fetch_chapters, fetch_images, retrieve_body};
+use utils::utils::{fix_title_to_path, get_env};
 use pdfer::pdfer::{download_images, mesh_scraps};
+use scrapper::scrapper::{fetch_chapters, fetch_images, retrieve_body, fetch_image_results};
 
 fn download_manga_chapter(chapter_url: &String){
   let borrowed_url = chapter_url.to_string();
@@ -15,12 +15,24 @@ fn download_manga_chapter(chapter_url: &String){
   let _ = mesh_scraps(downloaded_pages, "teste".to_string()); // TODO create url to parsable file title
 }
 
+fn search_manga_chapter(search_terms: &String) {
+  let bd = retrieve_body(
+    format!("{}/{}", get_env("DEFAULT_SEARCH_LINK"), fix_title_to_path(search_terms.to_string()))
+  ).unwrap();
+  let results = fetch_image_results(bd);
+  results.iter().for_each(|f | println!("{}", f.img_href));
+}
 
 fn main() {
   let argc: Vec<String> = args().collect();
+  let dft_val = "".to_string();
   // TODO add args size verification
-  if *argc.get(1).unwrap() == "dc".to_string() {
+  let main_arg = argc.get(1).unwrap_or(&dft_val);
+  if *main_arg == "dc".to_string() {
     println!("recong the arg");
     download_manga_chapter(argc.get(2).unwrap());
+  }
+  else if *main_arg == "q".to_string() {
+    search_manga_chapter(&"yotsuba".to_string());
   }
 }
