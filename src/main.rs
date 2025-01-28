@@ -29,8 +29,9 @@ fn args_command_selector(argc: Vec<String>) {
   }
 }
 
+
 fn main() {
   let argc: Vec<String> = gen_using_args();
   // TODO add args size verification
-  args_command_selector(argc);
+  // args_command_selector(argc);
 }
