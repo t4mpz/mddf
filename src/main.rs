@@ -5,6 +5,7 @@ mod structures;
 mod pdfer;
 mod screens;
 use std::env::args;
+use structures::structures::SearchResult;
 use utils::utils::get_env;
 
 fn gen_using_args() -> Vec<String> {
@@ -34,4 +35,6 @@ fn main() {
   let argc: Vec<String> = gen_using_args();
   // TODO add args size verification
   // args_command_selector(argc);
+  let results = argscommands::argscommands::search_manga_chapter(&"yotsuba".to_string());
+  println!("{}", screens::screens::result_renderer(results, Some(false)))
 }
