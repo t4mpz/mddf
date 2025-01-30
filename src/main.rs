@@ -36,5 +36,5 @@ fn main() {
   // TODO add args size verification
   // args_command_selector(argc);
   let results = argscommands::argscommands::search_manga_chapter(&"yotsuba".to_string());
-  println!("{}", screens::screens::result_renderer(results, Some(false)))
+  let toc = screens::screens::result_renderer(results, Some(true));
 }
