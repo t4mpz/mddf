@@ -1,8 +1,21 @@
 pub mod screens{
   use crate::argscommands::argscommands;
   use indicatif::ProgressBar;
-  use crate::structures::structures::SearchResult;
+  use crate::structures::{structures::SearchResult, structures::ResultDisplayOptions};
   
+
+  fn generate_result_string_by_options(result: SearchResult, option: ResultDisplayOptions) -> String {
+    let vectorized_options: Vec<bool> = vec![option.href, option.img_href, option.story_name, option.last_chapter, option.additional_info];
+    let vectorized_result: Vec<String> = vec![result.href, result.img_href, result.story_name, result.last_chapter, result.additional_info.join(" | ")];
+    let mut summarized_data: Vec<String> = Vec::new();
+    for i in 0..vectorized_options.len(){
+        if vectorized_options[i] {
+          summarized_data.push(vectorized_result[i].clone());
+        }
+    };
+    return summarized_data.join("\t");
+  }
+
 
   // Indexes the query search results and returns it as a text to be 
   // implemented in a std::io::out
