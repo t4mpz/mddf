@@ -1,5 +1,4 @@
 pub mod structures{
-  use cli_table::{Table, format::Justify, WithTitle};
   pub struct ImagePage{
     pub src: String,
     pub title: String,
