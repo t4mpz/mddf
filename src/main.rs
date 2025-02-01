@@ -5,7 +5,7 @@ mod structures;
 mod pdfer;
 mod screens;
 use std::env::args;
-use structures::structures::SearchResult;
+use structures::structures::{ResultDisplayOptions, SearchResult};
 use utils::utils::get_env;
 
 fn gen_using_args() -> Vec<String> {
@@ -14,6 +14,7 @@ fn gen_using_args() -> Vec<String> {
     let mut internal_args: Vec<String> = Vec::new();
     internal_args.push("mddf".to_string()); // has to have this first arg so it corresponds to the system
     internal_args.push("q".to_string());
+    internal_args.push(String::from("--no-add"));
     return internal_args;
   }
 }
@@ -33,8 +34,12 @@ fn args_command_selector(argc: Vec<String>) {
 
 fn main() {
   let argc: Vec<String> = gen_using_args();
-  // TODO add args size verification
+  let mut result_options = argscommands::argscommands::generate_result_options();
+  println!("Add info {}", result_options.additional_info);
+  argc[2..].iter().for_each(|f| { println!("{}", f); });
+  result_options = argscommands::argscommands::args_to_result_options(argc[2..].to_vec(), result_options);
+  println!("Add info {}", result_options.additional_info);
+  println!("href {}", result_options.href);
   // args_command_selector(argc);
-  let results = argscommands::argscommands::search_manga_chapter(&"yotsuba".to_string());
-  println!("{}", screens::screens::result_renderer(results, Some(true)));
+  // let results = argscommands::argscommands::search_manga_chapter(&"yotsuba".to_string());
 }
