@@ -1,12 +1,12 @@
 pub mod argscommands {
   use crate::scrapper::scrapper;
-  use crate::structures::structures::SearchResult;
+  use crate::structures::structures::{ListedChapter, SearchResult};
   use crate::utils::utils;
   use crate::options::download::DownloadOptions;
   use crate::options::search_results::ResultDisplayOptions;
   use crate::pdfer::pdfer;
 
-  pub fn download_manga_chapter(chapter_url: &String, chapter_title: &String){
+  fn download_manga_chapter(chapter_url: &String, chapter_title: &String){
     let borrowed_url = chapter_url.to_string();
     let borrowed_title = utils::fix_title_to_path(chapter_title.to_string());
     let pages = scrapper::fetch_images(scrapper::retrieve_body(borrowed_url).unwrap());
@@ -31,23 +31,14 @@ pub mod argscommands {
 
   pub fn download_using_options(options: DownloadOptions) {
     let chapters = scrapper::fetch_chapters(scrapper::retrieve_body(options.story_href.to_string()).unwrap());
-    // TODO
+    chapters.iter().for_each(|chapter | {
+      if !options.silent {
+        println!("Downloading chapter {}...", chapter.title);
+      }
+      download_manga_chapter(&chapter.href, &chapter.title);
+    });
     
     
-  }
-
-  /*
-   Generates the default result options to be used.
-   */
-  pub fn generate_result_options() -> ResultDisplayOptions {
-    return ResultDisplayOptions{
-      img_href: true,
-      href: true,
-      story_name: true,
-      last_chapter: true,
-      additional_info: true,
-      counting: true
-    };
   }
 
   /*

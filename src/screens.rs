@@ -1,6 +1,5 @@
 pub mod screens{
   use crate::argscommands::argscommands;
-  use indicatif::ProgressBar;
   use crate::structures::{structures::SearchResult};
   use crate::options::search_results::{ResultDisplayOptions, generate_result_string_by_options};
 
@@ -22,14 +21,5 @@ pub mod screens{
     }).collect();
     return parsed_string_results.join("\n");
   }
-
-  /*
-    It generates a new progress bar to be used and returns it so the using function can
-    iterate it. 
-    :returns: The Progress Bar 
-   */
-  // pub fn pg_while() -> ProgressBar {
-  //   // TODO
-  // }
 
 }
