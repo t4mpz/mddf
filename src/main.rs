@@ -4,8 +4,10 @@ mod scrapper;
 mod structures;
 mod pdfer;
 mod screens;
+mod options;
 use std::env::args;
-use structures::structures::{ResultDisplayOptions, SearchResult};
+use structures::structures::SearchResult;
+use options::search_results::ResultDisplayOptions;
 use utils::utils::get_env;
 
 fn gen_using_args() -> Vec<String> {

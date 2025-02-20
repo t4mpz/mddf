@@ -1,9 +1,9 @@
 pub mod argscommands {
-  use std::result;
-
-use crate::scrapper::scrapper;
-  use crate::structures::{structures::SearchResult, structures::ResultDisplayOptions};
+  use crate::scrapper::scrapper;
+  use crate::structures::structures::SearchResult;
   use crate::utils::utils;
+  use crate::options::download::DownloadOptions;
+  use crate::options::search_results::ResultDisplayOptions;
   use crate::pdfer::pdfer;
 
   pub fn download_manga_chapter(chapter_url: &String, chapter_title: &String){
@@ -27,6 +27,13 @@ use crate::scrapper::scrapper;
     chapters.iter().for_each(|cpt| {
       download_manga_chapter(&cpt.href, &cpt.title);
     });
+  }
+
+  pub fn download_using_options(options: DownloadOptions) {
+    let chapters = scrapper::fetch_chapters(scrapper::retrieve_body(options.story_href.to_string()).unwrap());
+    // TODO
+    
+    
   }
 
   /*

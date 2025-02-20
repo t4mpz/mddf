@@ -19,13 +19,4 @@ pub mod structures{
     pub last_chapter: String,
     pub additional_info: Vec<String>
   }
-
-  pub struct ResultDisplayOptions {
-    pub href: bool,
-    pub img_href: bool,
-    pub story_name: bool,
-    pub last_chapter: bool,
-    pub additional_info: bool,
-    pub counting: bool
-  }
 }
