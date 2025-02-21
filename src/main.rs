@@ -36,7 +36,7 @@ fn args_command_selector(argc: Vec<String>) {
     };
     let download_options = options::download::gen_download_options(argc.get(2).unwrap(),
                                                                    chapters_to_download, 
-                                                            argc.contains(&"q".to_string()));
+                                                                   argc.contains(&"q".to_string()));
     argscommands::argscommands::download_using_options(download_options);
   }
   else if *main_arg == "q".to_string() {
