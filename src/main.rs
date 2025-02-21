@@ -25,6 +25,8 @@ fn args_command_selector(argc: Vec<String>) {
   if *main_arg == "dc".to_string() {
     let chapters_to_download: i32 = match argc.contains(&"o".to_string()) {
       true => {
+        // this let here is honestly very bad, thank God I'm doing it inside a contains verification
+        // if by any chance it goes to the unwrap_or(0) and sums 1, it'll try to convert the second arg
         let pos: i32 = argc.binary_search(&"o".to_string()).unwrap().try_into().unwrap_or(0) + 1;
         let upos: usize = pos.try_into().unwrap();
         let arg: &String = argc.get(upos).unwrap();
@@ -33,8 +35,8 @@ fn args_command_selector(argc: Vec<String>) {
       false => 0
     };
     let download_options = options::download::gen_download_options(argc.get(2).unwrap(),
-                                                                                               chapters_to_download, 
-                                                                                               argc.contains(&"q".to_string()));
+                                                                   chapters_to_download, 
+                                                            argc.contains(&"q".to_string()));
     argscommands::argscommands::download_using_options(download_options);
   }
   else if *main_arg == "q".to_string() {
