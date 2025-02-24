@@ -20,6 +20,21 @@ pub mod search_results{
     }
   }
 
+  pub fn gen_base_result_options_from_args(args: Vec<String>) -> ResultDisplayOptions{
+    let mut base_options = gen_base_result_display_options();
+    args.iter().for_each(| arg | {
+      match arg {
+        _ if arg.clone() == "iurl".to_string() => base_options.img_href = true,
+        _ if arg.clone() == "N".to_string() => base_options.story_name = false,
+        _ if arg.clone() == "addinfo".to_string() => base_options.additional_info = true,
+        _ if arg.clone() == "lc".to_string() => base_options.last_chapter = true,
+        _ if arg.clone() == "Url".to_string() => base_options.href = false,
+        _ => {}
+      }
+    });
+    return base_options;
+  }
+
    /*
     Transforms a Search Result set into a string, retaining only the allowed fields
     It vectorizes the SearchResult data in a String vector and then compares

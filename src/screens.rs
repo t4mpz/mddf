@@ -1,6 +1,5 @@
 pub mod screens{
-  use crate::argscommands::argscommands;
-  use crate::structures::{structures::SearchResult};
+  use crate::structures::structures::SearchResult;
   use crate::options::search_results::{ResultDisplayOptions, generate_result_string_by_options};
 
 

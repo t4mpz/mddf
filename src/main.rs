@@ -13,7 +13,8 @@ fn gen_using_args() -> Vec<String> {
   else{
     let mut internal_args: Vec<String> = Vec::new();
     internal_args.push("mddf".to_string()); // has to have this first arg so it corresponds to the system
-    internal_args.push("q".to_string());
+    internal_args.push(String::from("q"));
+    internal_args.push(String::from("yotsubato"));
     internal_args.push(String::from("--no-add"));
     return internal_args;
   }
@@ -40,19 +41,25 @@ fn args_command_selector(argc: Vec<String>) {
     argscommands::argscommands::download_using_options(download_options);
   }
   else if *main_arg == "q".to_string() {
-    argscommands::argscommands::search_manga_chapter(&"yotsuba".to_string());
+    let results = argscommands::argscommands::search_manga_chapter(&argc.get(3).unwrap());
+    let options_from_args = options::search_results::gen_base_result_options_from_args(argc);
+    let display_results = screens::screens::result_renderer(results, &options_from_args);
+    println!("{}", display_results);
+  }
+  else if *main_arg == "help".to_string() || *main_arg == "h".to_string(){
+    // shows the help text
   }
 }
 
 
 fn main() {
   let argc: Vec<String> = gen_using_args();
-  let mut result_options = options::search_results::gen_base_result_display_options();
-  println!("Add info {}", result_options.additional_info);
-  argc[2..].iter().for_each(|f| { println!("{}", f); });
-  result_options = argscommands::argscommands::args_to_result_options(argc[2..].to_vec(), result_options);
-  println!("Add info {}", result_options.additional_info);
-  println!("href {}", result_options.href);
-  // args_command_selector(argc);
+  // let mut result_options = options::search_results::gen_base_result_display_options();
+  // println!("Add info {}", result_options.additional_info);
+  // argc[2..].iter().for_each(|f| { println!("{}", f); });
+  // result_options = argscommands::argscommands::args_to_result_options(argc[2..].to_vec(), result_options);
+  // println!("Add info {}", result_options.additional_info);
+  // println!("href {}", result_options.href);
+  args_command_selector(argc);
   // let results = argscommands::argscommands::search_manga_chapter(&"yotsuba".to_string());
 }
