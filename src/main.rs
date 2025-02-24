@@ -13,9 +13,9 @@ fn gen_using_args() -> Vec<String> {
   else{
     let mut internal_args: Vec<String> = Vec::new();
     internal_args.push("mddf".to_string()); // has to have this first arg so it corresponds to the system
-    internal_args.push(String::from("q"));
-    internal_args.push(String::from("yotsubato"));
-    internal_args.push(String::from("--no-add"));
+    internal_args.push(String::from("dc"));
+    internal_args.push(String::from("https://chapmanganato.to/manga-jp986550"));
+    // internal_args.push(String::from("--no-add"));
     return internal_args;
   }
 }
@@ -38,6 +38,7 @@ fn args_command_selector(argc: Vec<String>) {
     let download_options = options::download::gen_download_options(argc.get(2).unwrap(),
                                                                    chapters_to_download, 
                                                                    argc.contains(&"q".to_string()));
+    println!("{}", download_options.story_href);
     argscommands::argscommands::download_using_options(download_options);
   }
   else if *main_arg == "q".to_string() {
