@@ -9,7 +9,7 @@ pub mod argscommands {
   fn download_manga_chapter(chapter_url: &String, chapter_title: &String){
     let borrowed_url = chapter_url.clone();
     println!("is downloading");
-    let borrowed_title = utils::fix_title_to_path(chapter_title.clone());
+    let borrowed_title = &utils::fix_title_to_path(chapter_title.clone());
     let pages = scrapper::fetch_images(scrapper::retrieve_body(borrowed_url).unwrap());
     let downloaded_pages = pdfer::download_images(pages);
     let _ = pdfer::mesh_scraps(downloaded_pages, borrowed_title);

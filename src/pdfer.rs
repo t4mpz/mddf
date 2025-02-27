@@ -1,8 +1,7 @@
 pub mod pdfer{
-  use pdf_writer;
   use jpeg_to_pdf::JpegToPdf;
   use std::io::{BufWriter, Write};
-  use std::fs::{File, read, exists};
+  use std::fs::{File, read, exists, read_dir, DirEntry};
   use crate::utils::utils::{get_env, mk_tmp_scraps_folder, clear_scraps_folder, fix_title_to_path};
   use curl::easy::{List, Easy};
   use crate::structures::structures::ImagePage;
@@ -44,8 +43,8 @@ pub mod pdfer{
     return images_path;
   }
 
-  pub fn mesh_scraps(scraps: Vec<String>, manga_chapter_title: String) -> Result<String, Box<dyn std::error::Error>> {
-    let path = format!("./{}.pdf", &manga_chapter_title);
+  pub fn mesh_scraps(scraps: Vec<String>, manga_chapter_title: &String) -> Result<String, Box<dyn std::error::Error>> {
+    let path = format!("./{}.pdf", manga_chapter_title);
     let _file = File::create(&path)?;
     let pdf = JpegToPdf::new();
     let n_pdf = pdf.add_images(scraps.iter().map(|scrap| {read(scrap).unwrap()}));
@@ -56,5 +55,17 @@ pub mod pdfer{
     Ok(path)
   }
 
-
+  /*
+   Returns the ammount of pdf files inside the $pwd
+   it works only to update the story itself
+   you still have to provide the url to the mangas that will be added
+   */
+  pub fn list_pdfs() -> i32{
+    let pwd_contents = read_dir(".").unwrap();
+    let pdfs: Vec<Result<DirEntry, std::io::Error>> = pwd_contents.into_iter().filter(|direntry| {
+      let name = direntry.as_ref().unwrap().file_name().to_str().unwrap().to_string();
+      name.contains(".pdf")
+    }).collect();
+    return pdfs.iter().count().try_into().unwrap();
+  }
 }

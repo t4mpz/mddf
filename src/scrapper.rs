@@ -21,8 +21,6 @@ pub mod scrapper{
     Ok(())
   }
 
-  // TODO: MAJOR replace usage of selectors inside elements to child_elements
-
   #[tokio::main]
   pub async fn retrieve_body(url: String) -> Result<String, Box<dyn std::error::Error>>{
     let mut child_driver = start_chromedriver().await;
@@ -31,6 +29,7 @@ pub mod scrapper{
     .capabilities(cap)
     .connect("http://localhost:38073").await.expect("No webdriver? ");
     client.goto(&url).await?;
+    // should be checking for the DDOS page here
     let binding = client.current_url().await?;
     let client_url = binding.as_str();
     assert_eq!(url, client_url); 

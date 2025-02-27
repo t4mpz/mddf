@@ -29,6 +29,7 @@ pub mod search_results{
         _ if arg.clone() == "addinfo".to_string() => base_options.additional_info = true,
         _ if arg.clone() == "lc".to_string() => base_options.last_chapter = true,
         _ if arg.clone() == "Url".to_string() => base_options.href = false,
+        _ if arg.clone() == "C".to_string() => base_options.counting = false,
         _ => {}
       }
     });

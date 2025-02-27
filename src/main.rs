@@ -8,6 +8,8 @@ mod options;
 use std::env::args;
 use utils::utils::get_env;
 
+use pdfer::pdfer::list_pdfs;
+
 fn gen_using_args() -> Vec<String> {
   if get_env("MODE") != "debug" { return args().collect(); }
   else{
@@ -61,6 +63,7 @@ fn main() {
   // result_options = argscommands::argscommands::args_to_result_options(argc[2..].to_vec(), result_options);
   // println!("Add info {}", result_options.additional_info);
   // println!("href {}", result_options.href);
-  args_command_selector(argc);
+  // args_command_selector(argc);
+  println!("{} pdf files", list_pdfs())
   // let results = argscommands::argscommands::search_manga_chapter(&"yotsuba".to_string());
 }
