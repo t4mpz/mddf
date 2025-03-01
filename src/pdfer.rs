@@ -60,12 +60,12 @@ pub mod pdfer{
    it works only to update the story itself
    you still have to provide the url to the mangas that will be added
    */
-  pub fn list_pdfs() -> i32{
+  pub fn list_pdfs() -> usize{
     let pwd_contents = read_dir(".").unwrap();
     let pdfs: Vec<Result<DirEntry, std::io::Error>> = pwd_contents.into_iter().filter(|direntry| {
       let name = direntry.as_ref().unwrap().file_name().to_str().unwrap().to_string();
       name.contains(".pdf")
     }).collect();
-    return pdfs.iter().count().try_into().unwrap();
+    return pdfs.iter().count();
   }
 }

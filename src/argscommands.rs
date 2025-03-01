@@ -1,6 +1,6 @@
 pub mod argscommands {
   use crate::scrapper::scrapper;
-  use crate::structures::structures::{ListedChapter, SearchResult};
+  use crate::structures::structures::SearchResult;
   use crate::utils::utils;
   use crate::options::download::DownloadOptions;
   use crate::options::search_results::ResultDisplayOptions;
@@ -40,6 +40,21 @@ pub mod argscommands {
       }
       download_manga_chapter(&chapter.href, &chapter.title);
     });
+  }
+
+  pub fn update_pwd_with_url(story_url: &String){
+    let pdfs = pdfer::list_pdfs();
+    let chapters = scrapper::fetch_chapters(scrapper::retrieve_body(story_url.clone()).unwrap());
+    let qtd_c = chapters.iter().count();
+    if qtd_c < pdfs  { panic!("Wtf there are more pdfs here than online..."); }
+    if qtd_c == pdfs  { println!("All up to date ^w^"); }
+    if qtd_c > pdfs {
+      // downloads the other chapters
+      let remaining_chapters = (&chapters[pdfs-1..]).to_vec();
+      remaining_chapters.iter().for_each(|chpt| {
+        download_manga_chapter(&chpt.href, &chpt.title);
+      });
+    }
   }
 
   /*

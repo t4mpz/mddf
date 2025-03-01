@@ -63,7 +63,6 @@ fn main() {
   // result_options = argscommands::argscommands::args_to_result_options(argc[2..].to_vec(), result_options);
   // println!("Add info {}", result_options.additional_info);
   // println!("href {}", result_options.href);
-  // args_command_selector(argc);
-  println!("{} pdf files", list_pdfs())
+  args_command_selector(argc);
   // let results = argscommands::argscommands::search_manga_chapter(&"yotsuba".to_string());
 }

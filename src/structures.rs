@@ -5,6 +5,7 @@ pub mod structures{
     pub alt: String
   }
 
+  #[derive(Clone)]
   pub struct ListedChapter{
     pub href: String,
     pub title: String,
