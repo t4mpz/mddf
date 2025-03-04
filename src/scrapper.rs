@@ -28,8 +28,12 @@ pub mod scrapper{
     let client = fantoccini::ClientBuilder::native()
     .capabilities(cap)
     .connect("http://localhost:38073").await.expect("No webdriver? ");
-    client.goto(&url).await?;
+    if let Err(e) =  client.goto(&url).await {
+      panic!("Couldnt connect with the mangakalot href: {}", e);
+    }
     // should be checking for the DDOS page here
+    // should also check for the network response huh genious
+
     let binding = client.current_url().await?;
     let client_url = binding.as_str();
     assert_eq!(url, client_url); 
