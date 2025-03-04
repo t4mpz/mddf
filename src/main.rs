@@ -5,6 +5,7 @@ mod structures;
 mod pdfer;
 mod screens;
 mod options;
+mod bypass;
 use std::env::args;
 use utils::utils::get_env;
 
