@@ -5,8 +5,11 @@ Currently only supports mangakakalot links
 
 ## Env Configurations file example
 ```
-SCRAPS_FOLDER=scraps
-DEFAULT_FOLDER=downloads
+REFERER_TO_HEADER=<The manga host url>
+CHAPTERS_FOLDER=final-chapters
+DEFAULT_SCRAPS_FOLDER_NAME=scraps
+DEFAULT_SEARCH_LINK=<The search link for the manga host url>
+MODE=debug | normal
 
 ```
 # Another flippin' update

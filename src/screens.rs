@@ -21,4 +21,14 @@ pub mod screens{
     return parsed_string_results.join("\n");
   }
 
+  /*
+   Renders an image at the terminal using the kitty icat image kitten
+   for more info on that https://sw.kovidgoyal.net/kitty/kittens/icat/
+   it renders the kitten image using pre-defined image configurations
+   using the raw command curl -SsL <img href> | kitten icat
+   */
+  pub fn img_renderer(url_img: &String){
+
+  }
+
 }
